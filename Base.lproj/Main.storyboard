@@ -18,29 +18,59 @@
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="H8O-H2-SA7">
                                 <rect key="frame" x="-25" y="-15" width="51" height="31"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="176" y="151" width="51" height="31"/>
-                                </variation>
                                 <connections>
                                     <action selector="mySwitch:" destination="vXZ-lx-hvc" eventType="valueChanged" id="BX9-mb-jY0"/>
                                 </connections>
                             </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Boom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1W-X5-u2H">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="x1W-X5-u2H" secondAttribute="bottom" constant="446" id="UxI-RJ-eUi"/>
+                            <constraint firstAttribute="trailing" secondItem="x1W-X5-u2H" secondAttribute="trailing" id="WJe-Xw-OTF"/>
+                            <constraint firstItem="H8O-H2-SA7" firstAttribute="centerX" secondItem="x1W-X5-u2H" secondAttribute="centerX" id="WnD-m0-OTE"/>
+                            <constraint firstItem="H8O-H2-SA7" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="52" id="ZN0-Fs-3lO"/>
+                            <constraint firstItem="x1W-X5-u2H" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="eKl-vh-3vH"/>
+                            <constraint firstItem="x1W-X5-u2H" firstAttribute="top" secondItem="H8O-H2-SA7" secondAttribute="bottom" constant="22" id="mwv-qa-cDj"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="H8O-H2-SA7"/>
+                                <exclude reference="x1W-X5-u2H"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="UxI-RJ-eUi"/>
+                                <exclude reference="WnD-m0-OTE"/>
+                                <exclude reference="ZN0-Fs-3lO"/>
+                                <exclude reference="WJe-Xw-OTF"/>
+                                <exclude reference="eKl-vh-3vH"/>
+                                <exclude reference="mwv-qa-cDj"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="H8O-H2-SA7"/>
+                                <include reference="x1W-X5-u2H"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="UxI-RJ-eUi"/>
+                                <include reference="WnD-m0-OTE"/>
+                                <include reference="ZN0-Fs-3lO"/>
+                                <include reference="WJe-Xw-OTF"/>
+                                <include reference="eKl-vh-3vH"/>
+                                <include reference="mwv-qa-cDj"/>
                             </mask>
                         </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="412.5" y="211"/>
         </scene>
         <!--Siren View Controller-->
         <scene sceneID="noc-us-alX">

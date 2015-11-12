@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "SirenViewController.h"
 #import "FFT.h"
+#import <AVFoundation/AVAudioSession.h>
 @import AudioUnit;
 @import AudioToolbox;
 @import UIKit;
@@ -29,6 +30,8 @@
     initAgain= false;
     
 }
+
+
 int vibratePhone() {
     AudioServicesPlaySystemSound (kSystemSoundID_Vibrate);
     return 1;
@@ -37,9 +40,8 @@ int SirenFunction() {
     
     UIAlertView *SirenAlert = [[UIAlertView alloc] initWithTitle:@"Siren Detected" message:@"There has been a siren detected in your area" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
     [SirenAlert show];
-    vibratePhone();
-    
-    
+   // vibratePhone();
+  
     return 1;
 }
 
@@ -322,9 +324,6 @@ OSStatus renderCallback(void *userData, AudioUnitRenderActionFlags *actionFlags,
                 NSLog(@"Current Index is: %d",peakIndexArray[indexCnt]);
                 printf("\n");
                 NSLog(@"Other Index is: %d",peakIndexArray[indexCnt-19]);
-
-
-                
                 bimodal++;
                 
             }
