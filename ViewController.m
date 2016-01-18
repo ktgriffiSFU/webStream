@@ -23,27 +23,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view, typically from a nib.
     initAudioSession();
     initAudioStreams(audioUnit);
     initAgain= false;
     
 }
-<<<<<<< HEAD
-=======
 int vibratePhone() {
     AudioServicesPlaySystemSound (kSystemSoundID_Vibrate);
     return 1;
 }
->>>>>>> parent of eb4cfaf... Save before
 int SirenFunction() {
     
     UIAlertView *SirenAlert = [[UIAlertView alloc] initWithTitle:@"Siren Detected" message:@"There has been a siren detected in your area" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
     [SirenAlert show];
-<<<<<<< HEAD
-=======
-    vibratePhone();
->>>>>>> parent of eb4cfaf... Save before
     
     
     return 1;
@@ -69,8 +61,6 @@ bool initAgain = false;
 int *peakIndexArray = NULL;
 int indexCnt=1;
 int bimodal=0;
-double averagePower=0;
-double peakPower=0;
 int initAudioSession() {
     audioUnit = (AudioUnit*)malloc(sizeof(AudioUnit));
     
@@ -196,24 +186,39 @@ OSStatus renderCallback(void *userData, AudioUnitRenderActionFlags *actionFlags,
     fftBuffer.inputData = inData;
     [fftBuffer calculateWelchPeriodogramWithNewSignalSegment];
 
+    int lowIndex= 4;
+    int highIndex=64;
+    int peakIndex =4;
+    int filterIndex=4;
     
-<<<<<<< HEAD
-=======
+    double peakValue = fftBuffer.spectrumData[lowIndex];
+    double sndPValue = fftBuffer.spectrumData[lowIndex];
+    for (int i = lowIndex; i <highIndex; i++) {
+        if (peakValue <fftBuffer.spectrumData[i]) {
+            peakValue=fftBuffer.spectrumData[i];
+            peakIndex= i;
+        }
+    }
+    
+    for (int j = lowIndex; j < highIndex; j++) {
+        if (j<=peakIndex-filterIndex || j>=peakIndex+filterIndex) {
+            if (sndPValue <fftBuffer.spectrumData[j]){
+                sndPValue = fftBuffer.spectrumData[j];
+            }
+        }
+        
+    }
+    int indexOffset = 19;
+    int valueToCompare = 5;
+    int testEnd=120;
+    int sirenMinimum= 30;
+    int isBimodal=2;
     if (peakValue>3*sndPValue) {
         NSString *peakIndexString = [NSString stringWithFormat:@"%d", peakIndex];
         peakIndexArray[indexCnt]=peakIndex;
-        if (indexCnt==19 && sirenFound > 19) {
-            if (peakIndexArray[indexCnt]<peakIndexArray[indexCnt-19]-5 ||peakIndexArray[indexCnt]>peakIndexArray[indexCnt-19]+5) {
-                NSString *otherIndexCntString = [NSString stringWithFormat:@"%d", indexCnt];
-                printf("\n");
-                printf("other IndexCnt %s",[otherIndexCntString UTF8String]);
-                printf("\n");
-                NSLog(@"Current Index is: %d",peakIndexArray[indexCnt]);
-                printf("\n");
-                NSLog(@"Other Index is: %d",peakIndexArray[indexCnt-19]);
+        if (indexCnt==indexOffset && sirenFound > indexOffset) {
+            if (peakIndexArray[indexCnt]<peakIndexArray[indexCnt-indexOffset]-valueToCompare ||peakIndexArray[indexCnt]>peakIndexArray[indexCnt-indexOffset]+valueToCompare) {
 
-
-                
                 bimodal++;
                 
             }
@@ -225,19 +230,44 @@ OSStatus renderCallback(void *userData, AudioUnitRenderActionFlags *actionFlags,
         
     }
     else{
+        int youngSignal=3;
         peakIndexArray[indexCnt]=peakIndex;
         frameCnt++;
         indexCnt++;
         printf("-");
-        if (sirenFound<3) {
+        if (sirenFound<youngSignal) {
             bimodal=0;
         }
     }
-    if (indexCnt==20) {
+    if (indexCnt==indexOffset) {
         indexCnt=0;
     }
->>>>>>> parent of eb4cfaf... Save before
     
+    if (frameCnt==testEnd) {
+        printf("\n======end=====\n");
+        NSString *sirenFoundString = [NSString stringWithFormat:@"%d", sirenFound];
+        
+        printf("SirenCount:%s", [sirenFoundString UTF8String]);
+        printf("\n");
+        if (bimodal>isBimodal) {
+            printf("Bimodal\n");
+        }else{
+            printf("Not bimodal\n");
+        }
+        if (sirenFound>sirenMinimum || bimodal>isBimodal) {
+            //NOTE: bimodal is set to an option so its easier for you to set off the detection with a whistle
+            
+            sirenDetected =true;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                stopProcessingAudio(audioUnit);
+            });
+            printf("Siren Detected\n");
+        }else{
+            sirenDetected=false;
+        }
+        frameCnt=0;
+        sirenFound=0;
+    }
     return noErr;
 }
 
@@ -259,13 +289,6 @@ int stopProcessingAudio(AudioUnit *audioUnit) {
     return 0;
 }
 
-- (void)dealloc {
-    //i am not sure if all of these steps are neccessary. or if you just call DisposeAUGraph
-    free(inData);
-    free(convertedSampleBuffer);
-    
-    
-}
 
 
 @end
