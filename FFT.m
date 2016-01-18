@@ -140,7 +140,7 @@ double *w; // cos/sin table.
 - (void)setWindowType:(int)inWindowType {
     windowType = inWindowType;
     double N = self.dataLength;
-    double windowval, tmp;
+    double windowval=0, tmp;
     double pi = 3.14159265359;
     
    // NSLog(@"Set up all values, about to init window type %d", inWindowType);
